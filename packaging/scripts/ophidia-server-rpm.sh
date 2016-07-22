@@ -42,6 +42,7 @@ mkdir -p /usr/local/ophidia/oph-server/txt
 mkdir -p /var/www/html/ophidia/sessions
 cp -r authz /usr/local/ophidia/oph-server/
 mkdir -p /usr/local/ophidia/oph-server/authz/sessions
+mkdir -p /usr/local/ophidia/oph-server/etc/cert
 
 #Remove unnecessary include dir
 rm -rf /usr/local/ophidia/oph-server/include

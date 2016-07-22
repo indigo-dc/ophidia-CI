@@ -6,7 +6,19 @@ The Ophidia Continuous Integration comprises the scripts used to test, build and
 
 ### Requirements
 
-In order to run the scripts you need the complete environment configured. Please see [http://ophidia.cmcc.it/documentation/admin/install/preliminarysteps.html](http://ophidia.cmcc.it/documentation/admin/install/preliminarysteps.html). Additionally you need the *git* command line and *dpkg-deb*, in the case of Debian/Ubuntu distributions, or *rpmbuild*, in the case of CentOS distros, commands installed. 
+In order to run the scripts you need the complete environment configured. Please see [http://ophidia.cmcc.it/documentation/admin/install/preliminarysteps.html](http://ophidia.cmcc.it/documentation/admin/install/preliminarysteps.html). Additionally you need the git command line an the following command line tools: 
+
+* Codestyle:
+  * indent 
+* Functional:
+  * openssl 
+* Packaging: 
+  * dpkg-deb, in the case of Debian/Ubuntu distributions
+  * rpmbuild*, in the case of CentOS distros
+* Unittest:
+  * gcov
+  * lcov
+  * gcovr
 
 Before running the scripts execute the following commands:
 

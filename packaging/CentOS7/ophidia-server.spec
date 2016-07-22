@@ -26,6 +26,7 @@ Ophidia server, a service responsible for managing client requests and workflows
 %dir /var/www/html/ophidia/sessions
 %dir /usr/local/ophidia/oph-server/log
 %dir /usr/local/ophidia/oph-server/txt
+%dir /usr/local/ophidia/oph-server/etc/cert
 
 %post
 ln -sf /usr/local/ophidia/oph-server/bin/oph_server /usr/sbin/oph_server

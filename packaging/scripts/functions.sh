@@ -35,10 +35,11 @@ function build {
 	git clone https://github.com/indigo-dc/${repo_name}.git
 	cd ${pkg_path}/sources/$1/${repo_name}
 
+	git checkout $1
+
 	#Get version
 	get_version
 
-	git checkout $1
 	./bootstrap
 	./configure ${config_args} > /dev/null
 	make -s > /dev/null
