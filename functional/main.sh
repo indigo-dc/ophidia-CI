@@ -151,7 +151,8 @@ sleep 5
 
 function execc {
 	TIME=$(date +%s)
-	$INSTALL/oph_term $ACCESSPARAM -e "$2" > $1$TIME.json;
+	> $1$TIME.json;
+	$INSTALL/oph_term $ACCESSPARAM -e "$2" >> $1$TIME.json; 2>> $1$TIME.json;
 	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then cat $1$TIME.json; $(exit 1); else $(exit 0); fi
 }
 
@@ -177,8 +178,8 @@ execc cc "oph_createcontainer container=jenkins;dim=lat|lon|plev|time;dim_type=d
 execc ls "oph_list cwd=$cwd;"
 
 # Download NC file
-wget -P $WORKSPACE/ -O file.nc ${NCFILE} > /dev/null 2> /dev/null
 cd $WORKSPACE
+wget -O file.nc ${NCFILE} > /dev/null 2> /dev/null
 cp -p file.nc file_2.nc
 
 # Massive import
