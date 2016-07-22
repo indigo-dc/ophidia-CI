@@ -151,7 +151,7 @@ sleep 5
 
 function execc {
 	TIME=$(date +%s)
-	echo "TIME $1: COMMAND $2"
+	echo "TIME $TIME: COMMAND $2"
 	> $1$TIME.json;
 	$INSTALL/oph_term $ACCESSPARAM -e "$2" >> $1$TIME.json; 2>> $1$TIME.json;
 	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then cat $1$TIME.json; $(exit 1); else $(exit 0); fi
