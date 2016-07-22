@@ -156,6 +156,13 @@ function execc {
 	$INSTALL/oph_term $ACCESSPARAM -e "$2" >> $1$TIME.json; 2>> $1$TIME.json;
 	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then cat $1$TIME.json; $(exit 1); else $(exit 0); fi
 }
+function execw {
+	TIME=$(date +%s)
+	echo "TIME $TIME: COMMAND $2"
+	> $1$TIME.json;
+	$INSTALL/oph_term $ACCESSPARAM -w "$2" -a "$3" >> $1$TIME.json; 2>> $1$TIME.json;
+	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then cat $1$TIME.json; $(exit 1); else $(exit 0); fi
+}
 
 core=1
 cwd=/jenkins
@@ -312,15 +319,17 @@ execc ls "oph_list cwd=/;"
 git clone https://github.com/OphidiaBigData/ophidia-workflow-catalogue.git
 cd ophidia-workflow-catalogue/indigo/test
 
-execc wf1 "test1.json" "$core,$WORKSPACE/file.nc,${VARIABLE}"
-execc wf2 "test2.json" "$core,$WORKSPACE/file.nc,${VARIABLE}"
-execc wf30 "test3.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0"
-execc wf31 "test3.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1"
-execc wf400 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,0"
-execc wf401 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,1"
-execc wf410 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1,0"
-execc wf411 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1,1"
-execc wf50 "test5.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1,no"
-execc wf51 "test5.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,no"
-execc wf52 "test5.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,yes"
+execw wf1 "test1.json" "$core,$WORKSPACE/file.nc,${VARIABLE}"
+execw wf2 "test2.json" "$core,$WORKSPACE/file.nc,${VARIABLE}"
+execw wf30 "test3.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0"
+execw wf31 "test3.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1"
+execw wf400 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,0"
+execw wf401 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,1"
+execw wf410 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1,0"
+execw wf411 "test4.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1,1"
+execw wf50 "test5.json" "$core,$WORKSPACE/file.nc,${VARIABLE},1,no"
+execw wf51 "test5.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,no"
+execw wf52 "test5.json" "$core,$WORKSPACE/file.nc,${VARIABLE},0,yes"
+
+exit 0
 
