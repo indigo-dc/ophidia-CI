@@ -69,7 +69,7 @@ if [ ${dist} = 'el6' ] || [ ${dist} = 'el7.centos' ]
 then
 	sudo yum -y install ophidia-*.rpm
 else 
-	sudo apt-get -y install ophidia-*.deb
+	sudo dpkg -i ophidia-*.deb
 fi
 
 # Configuration
