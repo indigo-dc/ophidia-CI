@@ -102,24 +102,30 @@ rm -rf server* root* cacert.srl
 
 # Start services
 
-sudo /usr/sbin/httpd
+if [ ${dist} = 'el6' ] || [ ${dist} = 'el7.centos' ]
+then
+	sudo /usr/sbin/httpd
+else
+	sudo /usr/sbin/apache2
+fi
 
 sudo -u munge /usr/sbin/munged
 
 sudo /usr/local/ophidia/extra/sbin/slurmd
 sudo /usr/local/ophidia/extra/sbin/slurmctld
 
-sudo /bin/bash -c "/usr/bin/mysqld_safe --user=mysql 2>&1 > /dev/null &"
+#sudo /bin/bash -c "/usr/bin/mysqld_safe --user=mysql 2>&1 > /dev/null &"
+sudo /bin/bash -c "/usr/bin/mysqld_safe --user=mysql" &
 
 # Wait for services to start
 
-sleep 5
+sleep 10
 
 # Config services
 
 mysqladmin -u root password 'abcd'
 
-echo "[client]"> /home/jenkins/.my.cnf
+echo "[client]" > /home/jenkins/.my.cnf
 echo "password=abcd" >> /home/jenkins/.my.cnf
 
 # Load ophidia-primitives
