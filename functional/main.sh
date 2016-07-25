@@ -104,17 +104,25 @@ rm -rf server* root* cacert.srl
 
 if [ ${dist} = 'el6' ] || [ ${dist} = 'el7.centos' ]
 then
-	sudo /usr/sbin/httpd
-else
-	sudo service apache2 start
-fi
 
-sudo -u munge /usr/sbin/munged
+	sudo /usr/sbin/httpd
+
+	sudo -u munge /usr/sbin/munged
+
+	sudo /bin/bash -c "/usr/bin/mysqld_safe --user=mysql 2>&1 > /dev/null &"
+
+else
+
+	sudo service apache2 start
+
+	sudo -u munge /usr/sbin/munged --force
+
+	sudo service mysql start
+
+fi
 
 sudo /usr/local/ophidia/extra/sbin/slurmd
 sudo /usr/local/ophidia/extra/sbin/slurmctld
-
-sudo /bin/bash -c "/usr/bin/mysqld_safe --user=mysql 2>&1 > /dev/null &"
 
 # Wait for services to start
 
