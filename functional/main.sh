@@ -144,7 +144,7 @@ mysql -u root mysql < /usr/local/ophidia/oph-cluster/oph-primitives/etc/create_f
 echo "create database ophidiadb;" | mysql -u root
 echo "create database oph_dimensions;" | mysql -u root
 mysql -u root ophidiadb < /usr/local/ophidia/oph-cluster/oph-analytics-framework/etc/ophidiadb.sql
-echo "INSERT INTO host (hostname, cores, memory) VALUES ('127.0.0.1',4,1);" | mysql -u root ophidiadb
+echo "INSERT INTO host (hostname, cores, memory) VALUES ('127.0.0.1', 1, 1);" | mysql -u root ophidiadb
 echo "INSERT INTO dbmsinstance (idhost, login, password, port) VALUES (1, 'root', 'abcd', 3306);" | mysql -u root ophidiadb
 echo "INSERT INTO hostpartition (partitionname) VALUES ('test');" | mysql -u root ophidiadb
 echo "INSERT INTO hashost VALUES (1,1);" | mysql -u root ophidiadb
