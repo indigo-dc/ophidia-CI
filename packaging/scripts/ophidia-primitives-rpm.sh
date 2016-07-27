@@ -33,7 +33,12 @@ repo_name="ophidia-primitives"
 
 source ${pkg_path}/scripts/functions.sh
 
-build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-cluster/oph-primitives --with-matheval-path=/usr/local/ophidia/extra/"
+if [ ${dist} = 'el6' ] 
+then
+build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-cluster/oph-primitives --with-matheval-path=/usr/local/ophidia/extra/lib"
+else
+build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-cluster/oph-primitives --with-matheval-path=/usr/lib64"
+fi
 
 mkdir -p /usr/local/ophidia/share/oph-primitives
 cp -f LICENSE NOTICE.md /usr/local/ophidia/share/oph-primitives

@@ -7,8 +7,7 @@ Group:        Ophidia
 License:      GPLv3
 BuildRoot:    %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 Prefix:       /usr/local
-Requires:     zlib, gsl >= 1.13
-AutoReqProv:  no
+Requires:     zlib, gsl >= 1.13, libmatheval >= 1.1.11
 
 %description
 Ophidia libraries implementing array-based primitives to be plugged into IO servers. 
