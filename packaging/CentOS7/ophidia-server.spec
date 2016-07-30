@@ -7,8 +7,7 @@ Group:        Ophidia
 License:      GPLv3
 BuildRoot:    %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 Prefix:       /usr/local
-Requires:     mysql-community-libs >= 5.6.22, libxml2 >= 2.9, libcurl >= 7.29, openssl >= 1.0.1e, libssh2 >= 1.4.2, epel-release >= 7, jansson >= 2.4
-AutoReqProv:  no
+Requires:     mysql-community-libs >= 5.6.22, libxml2 >= 2.9, libcurl >= 7.29, openssl >= 1.0.1e, libssh2 >= 1.4.2, epel-release >= 7, jansson >= 2.4, libmatheval >= 1.1.11
 
 %description
 Ophidia server, a service responsible for managing client requests and workflows of Ophidia operators.

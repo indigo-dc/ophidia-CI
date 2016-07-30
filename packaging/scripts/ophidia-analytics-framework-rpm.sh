@@ -33,7 +33,12 @@ repo_name="ophidia-analytics-framework"
 
 source ${pkg_path}/scripts/functions.sh
 
-build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-cluster/oph-analytics-framework --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --enable-parallel-netcdf --with-netcdf-path=/usr/local/ophidia/extra"
+if [ ${dist} = 'el6' ] 
+then
+	build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-cluster/oph-analytics-framework --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --enable-parallel-netcdf --with-netcdf-path=/usr/local/ophidia/extra"
+else
+	build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-cluster/oph-analytics-framework --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --enable-parallel-netcdf --with-netcdf-path=/usr/lib64/mpich"
+fi
 
 mkdir -p /usr/local/ophidia/share/oph-analytics-framework
 cp -f LICENSE NOTICE.md /usr/local/ophidia/share/oph-analytics-framework
