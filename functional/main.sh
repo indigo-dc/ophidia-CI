@@ -104,21 +104,13 @@ rm -rf server* root* cacert.srl
 
 if [ ${dist} = 'el6' ] || [ ${dist} = 'el7.centos' ]
 then
-
 	sudo /usr/sbin/httpd
-
 	sudo -u munge /usr/sbin/munged
-
 	sudo /bin/bash -c "/usr/bin/mysqld_safe --user=mysql 2>&1 > /dev/null &"
-
 else
-
 	sudo service apache2 start
-
 	sudo -u munge /usr/sbin/munged --force
-
 	sudo service mysql start
-
 fi
 
 sudo /usr/local/ophidia/extra/sbin/slurmd
@@ -162,17 +154,21 @@ sleep 5
 
 # Init environment for tests
 
+TESTN=1
+
 function execc {
 	TIME=$(date +%s)
-	echo "$TIME: EXEC COMMAND $2"
+	echo "Test $TESTN: EXEC COMMAND $2"
 	$INSTALL/oph_term $ACCESSPARAM -e "$2" 2>&1 > $1$TIME.json
-	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then cat $1$TIME.json; $(exit 1); else $(exit 0); fi
+	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then $(exit 1); else $(exit 0); fi
+	let "TESTN++"
 }
 function execw {
 	TIME=$(date +%s)
-	echo "$TIME: EXEC WORKFLOW $2 $3"
+	echo "Test $TESTN: EXEC WORKFLOW $2 $3"
 	$INSTALL/oph_term $ACCESSPARAM -w "$2" -a "$3" 2>&1 > $1$TIME.json
-	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then cat $1$TIME.json; $(exit 1); else $(exit 0); fi
+	if [ $(grep "ERROR" $1$TIME.json | wc -l) -gt 0 ]; then $(exit 1); else $(exit 0); fi
+	let "TESTN++"
 }
 
 core=1
@@ -206,7 +202,9 @@ execc imp "oph_importnc3 src_path=[$WORKSPACE/*.nc];measure=${VARIABLE};imp_conc
 execc csz "oph_cubesize cube=[measure=${VARIABLE}];cwd=$cwd;"
 execc ce "oph_cubeelements cube=[measure=${VARIABLE}];cwd=$cwd;"
 execc cs "oph_cubeschema cube=[measure=${VARIABLE}];cwd=$cwd;"
-execc dc "oph_delete cube=[measure=${VARIABLE}];ncores=$core;cwd=$cwd;"
+echo `execc dc "oph_delete cube=[measure=${VARIABLE}];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=${VARIABLE}];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=${VARIABLE}];ncores=$core;cwd=$cwd;"`
 
 # Randcube
 execc rc "oph_randcube compressed=no;container=jenkins;dim=lat|lon|time;dim_size=16|100|360;exp_ndim=2;host_partition=test;measure=jenkins;measure_type=float;nfrag=16;ntuple=100;concept_level=c|c|d;filesystem=local;ndbms=1;ncores=$core;cwd=$cwd;"
@@ -288,7 +286,9 @@ execc app "oph_apply query=oph_gsl_quantile(measure,0.25,0.5,0.75);measure_type=
 execc app "oph_apply query=oph_gsl_sort(measure);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_gsl_histogram(measure,10);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 # Clear
-execc dc "oph_delete cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
+echo `execc dc "oph_delete cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"`
 
 # APEX
 execc rc "oph_randcube container=jenkins;dim=lat|lon|time;dim_size=16|100|360;exp_ndim=2;host_partition=test;measure=jenkins;measure_type=float;nfrag=16;ntuple=100;concept_level=c|c|d;filesystem=local;ndbms=1;ncores=$core;cwd=$cwd;"
@@ -306,8 +306,12 @@ execc cio "oph_cubeio cube=[measure=jenkins;level=3];cwd=$cwd;"
 execc cio "oph_cubeio cube=[measure=jenkins;level=6];cwd=$cwd;"
 
 # Roll-up & drill-down
-execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"
-execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"
+echo `execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"`
 execc rup "oph_rollup cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
 execc dwn "oph_drilldown cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"
 execc cio "oph_cubeio cube=[measure=jenkins;level=3];cwd=$cwd;"
@@ -317,7 +321,9 @@ execc sub2 "oph_subset2 cube=[measure=jenkins;level=3];subset_dims=lon|time;subs
 execc cs "oph_cubeschema cube=[measure=jenkins;level=3];cwd=$cwd;"
 
 # Flush residual data
-execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"
+echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
 execc dc "oph_deletecontainer container=jenkins;delete_type=physical;hidden=no;cwd=$cwd;"
 execc rmf "oph_folder command=rm;path=jenkins;cwd=/;"
 execc ls "oph_list cwd=/;"
