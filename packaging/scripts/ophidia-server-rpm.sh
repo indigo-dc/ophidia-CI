@@ -33,7 +33,12 @@ repo_name="ophidia-server"
 
 source ${pkg_path}/scripts/functions.sh
 
-build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-server --with-framework-path=/usr/local/ophidia/oph-cluster/oph-analytics-framework --with-soapcpp2-path=/usr/local/ophidia/extra --enable-webaccess --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --with-matheval-path=/usr/local/ophidia/extra"
+if [ ${dist} = 'el6' ] 
+then
+build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-server --with-framework-path=/usr/local/ophidia/oph-cluster/oph-analytics-framework --with-soapcpp2-path=/usr/local/ophidia/extra --enable-webaccess --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --with-matheval-path=/usr/local/ophidia/extra/lib"
+else
+build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-server --with-framework-path=/usr/local/ophidia/oph-cluster/oph-analytics-framework --with-soapcpp2-path=/usr/local/ophidia/extra --enable-webaccess --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --with-matheval-path=/usr/lib64"
+fi
 
 mkdir -p /usr/local/ophidia/share/oph-server
 cp -f LICENSE NOTICE.md /usr/local/ophidia/share/oph-server
