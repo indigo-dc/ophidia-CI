@@ -18,14 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-if [ $# -ne 2 ]
+if [ $# -lt 2 ]
 then
         echo "The following arguments are required: buildtype (master, devel, etc.), distro (centos6, centos7, ubuntu14)"
+		echo "The following arguments are optional: package (terminal, primitives, server or analytics-framework)"
         exit 1
 fi
 
 buildtype=$1
 distro=$2
+package=$3
 pkg_path=$PWD
 
 #Prepare environment
@@ -68,10 +70,18 @@ then
 	}
 
 	#Build RPMS
-	run_packaging_script_centos "ophidia-terminal-rpm.sh"
-	run_packaging_script_centos "ophidia-analytics-framework-rpm.sh"
-	run_packaging_script_centos "ophidia-primitives-rpm.sh"
-	run_packaging_script_centos "ophidia-server-rpm.sh"
+	if [ "${package}" == "terminal" ] || [ $# -eq 2 ]; then
+		run_packaging_script_centos "ophidia-terminal-rpm.sh"
+	fi
+	if [ "${package}" == "analytics-framework" ] || [ $# -eq 2 ]; then
+		run_packaging_script_centos "ophidia-analytics-framework-rpm.sh"
+	fi
+	if [ "${package}" == "primitives" ] || [ $# -eq 2 ]; then
+		run_packaging_script_centos "ophidia-primitives-rpm.sh"
+	fi
+	if [ "${package}" == "server" ] || [ $# -eq 2 ]; then
+		run_packaging_script_centos "ophidia-server-rpm.sh"
+	fi
 
 	#Move new RPMS
 	mv ${pkg_path}/rpmbuild/RPMS/x86_64/*.rpm /usr/local/ophidia/pkg
@@ -95,10 +105,18 @@ else
 		}
 
 		#Build DEBS
-		run_packaging_script_debian "ophidia-terminal-deb.sh"
-		run_packaging_script_debian "ophidia-analytics-framework-deb.sh"
-		run_packaging_script_debian "ophidia-primitives-deb.sh"
-		run_packaging_script_debian "ophidia-server-deb.sh"
+		if [ "${package}" == "terminal" ] || [ $# -eq 2 ]; then
+			run_packaging_script_debian "ophidia-terminal-deb.sh"
+		fi
+		if [ "${package}" == "analytics-framework" ] || [ $# -eq 2 ]; then
+			run_packaging_script_debian "ophidia-analytics-framework-deb.sh"
+		fi
+		if [ "${package}" == "primitives" ] || [ $# -eq 2 ]; then
+			run_packaging_script_debian "ophidia-primitives-deb.sh"
+		fi
+		if [ "${package}" == "server" ] || [ $# -eq 2 ]; then
+			run_packaging_script_debian "ophidia-server-deb.sh"
+		fi
 
 		#Move new DEBS
 		mv ${pkg_path}/debbuild/*.deb /usr/local/ophidia/pkg
