@@ -47,5 +47,5 @@ cd $WORKSPACE
 
 make check-code-coverage > /dev/null
 
-gcovr . -x -o coverage.xml -e '.*curl' -e '.*test'
+gcovr . -x -o coverage.xml -e '.*curl' -e '.*server_test'
 
