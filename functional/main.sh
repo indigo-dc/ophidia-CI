@@ -194,7 +194,7 @@ execc ls "oph_list cwd=$cwd;"
 
 # Download NC file
 cd $WORKSPACE
-wget -O file.nc ${NCFILE} > /dev/null 2> /dev/null
+wget --no-check-certificate -O file.nc ${NCFILE} > /dev/null 2> /dev/null
 cp -p file.nc file_2.nc
 
 # Massive import
