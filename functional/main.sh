@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -e
+
 if [ $# -ne 6 ]
 then
         echo "The following arguments are required: workspace (where there are the sources), distro (centos6, centos7, ubuntu14), base url of pkg repository, file name to be downloaded (without the extension .zip), link to a NC file used for test (with dimensions lat|lon|time), variable to be imported"
@@ -53,6 +55,7 @@ esac
 ssh-keygen -t dsa -f /home/jenkins/.ssh/id_dsa -N ""
 cat /home/jenkins/.ssh/id_dsa.pub >> /home/jenkins/.ssh/authorized_keys
 chmod 600 /home/jenkins/.ssh/authorized_keys
+ssh -o "StrictHostKeyChecking no" 127.0.0.1 ":"
 
 # ophidia-packages download
 
@@ -139,7 +142,7 @@ mysql -u root ophidiadb < /usr/local/ophidia/oph-cluster/oph-analytics-framework
 echo "INSERT INTO host (hostname, cores, memory) VALUES ('127.0.0.1', 1, 1);" | mysql -u root ophidiadb
 echo "INSERT INTO dbmsinstance (idhost, login, password, port) VALUES (1, 'root', 'abcd', 3306);" | mysql -u root ophidiadb
 echo "INSERT INTO hostpartition (partitionname) VALUES ('test');" | mysql -u root ophidiadb
-echo "INSERT INTO hashost VALUES (1,1);" | mysql -u root ophidiadb
+echo "INSERT INTO hashost (idhostpartition,idhost) VALUES (1,1);" | mysql -u root ophidiadb
 
 # Start Ophidia Server
 
