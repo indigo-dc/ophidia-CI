@@ -37,7 +37,6 @@ build $1 ${pkg_path} ${repo_name} "--prefix=/usr/local/ophidia/oph-server --with
 mkdir -p /usr/local/ophidia/share/oph-server
 cp -f LICENSE NOTICE.md /usr/local/ophidia/share/oph-server
 mkdir -p /usr/local/ophidia/oph-server/log
-mkdir -p /usr/local/ophidia/oph-server/txt
 mkdir -p /var/www/html/ophidia/sessions
 cp -r authz /usr/local/ophidia/oph-server/
 mkdir -p /usr/local/ophidia/oph-server/authz/sessions
@@ -45,9 +44,6 @@ mkdir -p /usr/local/ophidia/oph-server/etc/cert
 
 #Remove unnecessary include dir
 rm -rf /usr/local/ophidia/oph-server/include
-
-#Copy configuration files
-cp -r ${pkg_path}/common/oph-server/etc/* /usr/local/ophidia/oph-server/etc/
 
 mkdir -p ${pkg_path}/${pkg_name}_${version}-${release}_amd64/DEBIAN
 

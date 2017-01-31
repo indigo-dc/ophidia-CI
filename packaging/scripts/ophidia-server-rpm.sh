@@ -43,7 +43,6 @@ fi
 mkdir -p /usr/local/ophidia/share/oph-server
 cp -f LICENSE NOTICE.md /usr/local/ophidia/share/oph-server
 mkdir -p /usr/local/ophidia/oph-server/log
-mkdir -p /usr/local/ophidia/oph-server/txt
 mkdir -p /var/www/html/ophidia/sessions
 cp -r authz /usr/local/ophidia/oph-server/
 mkdir -p /usr/local/ophidia/oph-server/authz/sessions
@@ -51,9 +50,6 @@ mkdir -p /usr/local/ophidia/oph-server/etc/cert
 
 #Remove unnecessary include dir
 rm -rf /usr/local/ophidia/oph-server/include
-
-#Copy configuration files
-cp -r ${pkg_path}/common/oph-server/etc/* /usr/local/ophidia/oph-server/etc/
 
 copy_spec ${pkg_path} ${pkg_name} ${version} ${release} ${dist} ${spec_path}
 
@@ -68,5 +64,5 @@ rpmbuild --define "_topdir ${pkg_path}/rpmbuild" -bb -vv ${pkg_path}/rpmbuild/SP
 rm -rf ${pkg_path}/sources/$1/${repo_name}
 rm -rf /usr/local/ophidia/oph-server
 rm -rf /usr/local/ophidia/share/oph-server
-rm -rf /var/www/html/ophidia/{*.php,*.css,sessions
+rm -rf /var/www/html/ophidia/{*.php,*.css,sessions}
 
