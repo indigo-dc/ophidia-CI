@@ -201,7 +201,7 @@ wget --no-check-certificate -O file.nc ${NCFILE} > /dev/null 2> /dev/null
 cp -p file.nc file_2.nc
 
 # Massive import
-execc imp "oph_importnc3 src_path=[$WORKSPACE/*.nc];measure=${VARIABLE};imp_concept_level=d;imp_dim=time;container=jenkins;ncores=$core;cwd=$cwd;"
+execc imp "oph_importnc src_path=[$WORKSPACE/*.nc];measure=${VARIABLE};imp_concept_level=d;imp_dim=time;container=jenkins;ncores=$core;cwd=$cwd;"
 execc csz "oph_cubesize cube=[measure=${VARIABLE}];cwd=$cwd;"
 execc ce "oph_cubeelements cube=[measure=${VARIABLE}];cwd=$cwd;"
 execc cs "oph_cubeschema cube=[measure=${VARIABLE}];cwd=$cwd;"
@@ -338,6 +338,7 @@ execc ls "oph_list cwd=/;"
 
 git clone https://github.com/OphidiaBigData/ophidia-workflow-catalogue.git
 cd ophidia-workflow-catalogue/indigo/test
+git checkout devel
 
 execw wf1 "test1.json" "$core,$WORKSPACE/file.nc,${VARIABLE}"
 execw wf2 "test2.json" "$core,$WORKSPACE/file.nc,${VARIABLE}"
