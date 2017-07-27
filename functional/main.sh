@@ -2,7 +2,7 @@
 
 #
 #    Ophidia CI
-#    Copyright (C) 2012-2016 CMCC Foundation
+#    Copyright (C) 2012-2017 CMCC Foundation
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ cp ${pkg_path}/etc/server.conf /usr/local/ophidia/oph-server/etc/
 
 cd /usr/local/ophidia/oph-server/etc/cert/
 
-openssl req -newkey rsa:1024 -passout pass:abcd  -subj "/" -sha1  -keyout rootkey.pem -out rootreq.pem
+openssl req -newkey rsa:1024 -passout pass:abcd  -subj "/" -sha1 -keyout rootkey.pem -out rootreq.pem
 openssl x509 -req -in rootreq.pem -passin pass:abcd -sha1 -extensions v3_ca -signkey rootkey.pem -out rootcert.pem
 cat rootcert.pem rootkey.pem  > cacert.pem
 
@@ -259,6 +259,16 @@ execc app "oph_apply query=oph_math(measure,'OPH_MATH_EXP');measure_type=auto;cu
 execc app "oph_apply query=oph_math(measure,'OPH_MATH_ROUND');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_math(measure,'OPH_MATH_TAN');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_math(measure,'OPH_MATH_ABS');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_append(measure);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_append('oph_float|oph_float','oph_float',measure,measure);check_type=no;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_append('oph_float|oph_float|oph_float','oph_float',measure,measure,measure);check_type=no;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_accumulate(measure);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_deaccumulate(measure);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_extend(measure);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_extend(measure,2);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_extend(measure,3,'i');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_interlace('oph_float|oph_float','oph_float',measure,measure);check_type=no;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_interlace('oph_float|oph_float|oph_float','oph_float',measure,measure,measure);check_type=no;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_predicate(measure,'x-100','>0','sqrt(x)-100','-x^2');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_get_subarray2(measure,'2:17');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_get_subarray2(measure,'1:2:end',36);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
@@ -275,6 +285,8 @@ execc app "oph_apply query=oph_reduce(measure,'OPH_AVG',30);measure_type=auto;cu
 execc app "oph_apply query=oph_reduce(measure,'OPH_STD',40);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_reduce2(measure,'OPH_MAX',10,1,360);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_reduce2(measure,'OPH_MIN',20,2,180);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_reduce2(measure,'OPH_ARG_MAX',10,4,90);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc app "oph_apply query=oph_reduce2(measure,'OPH_ARG_MIN',9,4,90);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_reduce2(measure,'OPH_AVG',12,10,36);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_reduce2(measure,'OPH_STD',5,36,10);measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc app "oph_apply query=oph_aggregate_stats(measure,'1111111');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
@@ -308,31 +320,50 @@ execc cio "oph_cubeio cube=[measure=jenkins;level=0];cwd=$cwd;"
 execc cio "oph_cubeio cube=[measure=jenkins;level=3];cwd=$cwd;"
 execc cio "oph_cubeio cube=[measure=jenkins;level=6];cwd=$cwd;"
 
-# Roll-up & drill-down
-echo `execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"`
-echo `execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"`
-echo `execc dc "oph_delete cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"`
-echo `execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"`
-echo `execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"`
-echo `execc dc "oph_delete cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"`
-execc rup "oph_rollup cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
-execc dwn "oph_drilldown cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"
-execc cio "oph_cubeio cube=[measure=jenkins;level=3];cwd=$cwd;"
-
 # Subsetting
-execc sub2 "oph_subset2 cube=[measure=jenkins;level=3];subset_dims=lon|time;subset_filter=0:1000|0:500;ncores=$core;cwd=$cwd;"
-execc cs "oph_cubeschema cube=[measure=jenkins;level=3];cwd=$cwd;"
+echo `execc dc "oph_delete cube=[measure=jenkins;level=2|3];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=2|3];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=2|3];ncores=$core;cwd=$cwd;"`
+execc sub2 "oph_subset2 cube=[measure=jenkins;level=1];subset_dims=lon|time;subset_filter=0:1000|0:500;ncores=$core;cwd=$cwd;"
+execc cs "oph_cubeschema cube=[measure=jenkins;level=1];cwd=$cwd;"
+
+# Missing values
+echo `execc dc "oph_delete cube=[measure=jenkins;level=1|2|3];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=1|2|3];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins;level=1|2|3];ncores=$core;cwd=$cwd;"`
+execc apl "oph_apply query=oph_predicate(measure,'x-800','>0','NAN','x');measure_type=auto;cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc apl "oph_apply query=oph_cast('oph_float','oph_short',measure,NULL,-1000);cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
+execc apl "oph_apply query=oph_cast('oph_float','oph_int',measure,NULL,-1000);cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
+execc apl "oph_apply query=oph_cast('oph_float','oph_long',measure,NULL,-1000);cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
+execc apl "oph_apply query=oph_cast('oph_float','oph_double',measure,NULL,-1000);cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
+execc red "oph_reduce2 operation=min;dim=time;cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"
+execc red "oph_reduce2 operation=min;dim=time;missingvalue=-1000;cube=[measure=jenkins;level=2];ncores=$core;cwd=$cwd;"
+execc agr "oph_aggregate2 operation=max;dim=lon;cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"
+execc agr "oph_aggregate2 operation=max;dim=lon;missingvalue=-1000;cube=[measure=jenkins;level=3];ncores=$core;cwd=$cwd;"
+
+echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
+echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
+
+# Roll-up & drill-down (only MySQL)
+execc rc "oph_randcube container=jenkins;dim=lat|lon|time;dim_size=16|100|360;exp_ndim=2;host_partition=test;measure=jenkins;measure_type=float;nfrag=16;ntuple=100;concept_level=c|c|d;filesystem=local;ndbms=1;ioserver=mysql_table;nhost=1;ncores=$core;cwd=$cwd;"
+execc rup "oph_rollup cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
+execc dwn "oph_drilldown cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
+execc cio "oph_cubeio cube=[measure=jenkins;level=2];cwd=$cwd;"
 
 # Flush residual data
 echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
 echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
 echo `execc dc "oph_delete cube=[measure=jenkins];ncores=$core;cwd=$cwd;"`
+
 execc dc "oph_deletecontainer container=jenkins;delete_type=physical;hidden=no;cwd=$cwd;"
 execc rmf "oph_folder command=rm;path=jenkins;cwd=/;"
 execc ls "oph_list cwd=/;"
 
-
-
+# Test file system access
+execc lsd "oph_fs command=ls;"
+execc cdd "oph_fs command=cd;dpath=$WORKSPACE;"
+execc lsd "oph_fs command=ls;"
 
 # Integration test
 
