@@ -298,7 +298,7 @@ execc rc "oph_randcube container=jenkins;dim=lat|lon|time;dim_size=16|100|360;ex
 execc dup "oph_duplicate cube=[measure=jenkins;level=0];ncores=$core;cwd=$cwd;"
 execc rdc "oph_duplicate cube=[measure=jenkins;level=1];ncores=$core;cwd=$cwd;"
 execc agr "oph_aggregate2 cube=[measure=jenkins;level=2];dim=lon;operation=avg;ncores=$core;cwd=$cwd;"
-execc ecb "oph_explorecube cube=[measure=jenkins;level=3];show_id=yes;show_index=yes;subset_dims=lat|time;subset_filter=0:1000|0:200;cwd=$cwd;"
+execc ecb "oph_explorecube cube=[measure=jenkins;level=3];show_id=yes;show_index=yes;subset_dims=lat|time;subset_filter=0:1000|0:200;subset_type=coord;cwd=$cwd;"
 execc mrg "oph_merge cube=[measure=jenkins;level=3];nmerge=16;ncores=$core;cwd=$cwd;"
 execc agr "oph_aggregate2 cube=[measure=jenkins;level=4];dim=lat;operation=min;ncores=$core;cwd=$cwd;"
 execc rdc "oph_reduce2 cube=[measure=jenkins;level=5];dim=time;operation=sum;ncores=$core;cwd=$cwd;"
