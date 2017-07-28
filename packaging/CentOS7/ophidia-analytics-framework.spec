@@ -7,7 +7,7 @@ Group:        Ophidia
 License:      GPLv3
 BuildRoot:    %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 Prefix:       /usr/local
-Requires:     mpich, mpich-autoload, mysql-community-libs >= 5.6.22, epel-release >= 7, jansson >= 2.4, libxml2 >= 2.9, openssl >= 1.0.1e, netcdf-mpich >= 4.3.3
+Requires:     mpich, mpich-autoload, mysql-community-libs >= 5.6.22, epel-release >= 7, jansson >= 2.4, libxml2 >= 2.9, openssl >= 1.0.1e, netcdf-mpich >= 4.3.3, cfitsio
 
 %description
 Ophidia framework module with all analytics operators. Parallel NetCDF support enabled.

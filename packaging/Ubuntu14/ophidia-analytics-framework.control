@@ -3,7 +3,7 @@ Version: **VERSION**-**RELEASE**
 Section: base
 Priority: optional
 Architecture: amd64
-Depends: libmpich2-dev, libmysqlclient18, libjansson4 (>= 2.4), libxml2 (>= 2.9), libssl1.0.0 (>= 1.0.1e)
+Depends: libmpich2-dev, libmysqlclient18, libjansson4 (>= 2.4), libxml2 (>= 2.9), libssl1.0.0 (>= 1.0.1e), libcfitsio3-dev
 Maintainer: Ophidia Team <ophidia-info@cmcc.it>
 Description: Ophidia Analytics Framework
  Ophidia framework module with analytics operators. Parallel NetCDF support enabled.
