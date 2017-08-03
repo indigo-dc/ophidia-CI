@@ -49,7 +49,7 @@ if [ "${package}" == "analytics-framework" ] || [ $# -eq 1 ]; then
 	cd /usr/local/ophidia/src/ophidia-analytics-framework
 	git checkout ${buildtype}
 	./bootstrap
-	./configure --prefix=/usr/local/ophidia/oph-cluster/oph-analytics-framework --enable-parallel-netcdf --with-netcdf-path=/usr/local/ophidia/extra --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia > /dev/null
+	./configure --prefix=/usr/local/ophidia/oph-cluster/oph-analytics-framework --enable-parallel-netcdf --with-netcdf-path=/usr/local/ophidia/extra --with-web-server-path=/var/www/html/ophidia --with-web-server-url=http://127.0.0.1/ophidia --enable-cfitsio> /dev/null
 	make -s > /dev/null
 	make install -s > /dev/null
 fi
